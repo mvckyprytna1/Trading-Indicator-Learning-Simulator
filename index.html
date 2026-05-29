@@ -1,458 +1,76 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trading Indicator Learning Simulator</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body class="antialiased text-slate-100 flex h-screen overflow-hidden">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Simulator</title>
+    </head>
+<body class="antialiased text-slate-100 flex h-screen overflow-hidden bg-[#08111F]">
 
-  <aside class="w-64 bg-[#0F1B2D] border-r border-slate-800 flex flex-col hidden md:flex z-30">
-    <div class="p-5 border-b border-slate-800 flex items-center gap-3">
-      <i class="fa-solid fa-chart-line text-emerald-400 text-xl"></i>
-      <div>
-        <h1 class="font-bold text-sm tracking-wide">TRADING SIMULATOR</h1>
-        <p class="text-[10px] text-slate-400 font-medium">Edukasi Indikator Saham</p>
-      </div>
-    </div>
-    <nav class="flex-1 p-4 space-y-1 overflow-y-auto custom-scrollbar">
-      <a href="#" onclick="navigate('dashboard')" class="nav-link active flex items-center gap-3 px-4 py-3 rounded-xl transition text-sm font-medium"><i class="fa-solid fa-gauge w-5"></i> Dashboard</a>
-      <a href="#" onclick="navigate('materi')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl transition text-sm font-medium"><i class="fa-solid fa-book w-5"></i> Materi Indikator</a>
-      <a href="#" onclick="navigate('simulator')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl transition text-sm font-medium"><i class="fa-solid fa-sliders w-5"></i> Simulator Utama</a>
-      <a href="#" onclick="navigate('ma200')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl transition text-sm font-medium"><i class="fa-solid fa-wave-square w-5"></i> Simulasi MA200</a>
-      <a href="#" onclick="navigate('entry')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl transition text-sm font-medium"><i class="fa-solid fa-right-to-bracket w-5"></i> Simulasi Entry</a>
-      <a href="#" onclick="navigate('cheatsheet')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl transition text-sm font-medium"><i class="fa-solid fa-clipboard-list w-5"></i> Cheat Sheet</a>
-      <a href="#" onclick="navigate('studi-kasus')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl transition text-sm font-medium"><i class="fa-solid fa-graduation-cap w-5"></i> Studi Kasus</a>
-      <a href="#" onclick="navigate('kuis')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl transition text-sm font-medium"><i class="fa-solid fa-circle-question w-5"></i> Kuis Interaktif</a>
-      <a href="#" onclick="navigate('hasil')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl transition text-sm font-medium"><i class="fa-solid fa-square-poll-vertical w-5"></i> Hasil Belajar</a>
-      <a href="#" onclick="navigate('pengaturan')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl transition text-sm font-medium"><i class="fa-solid fa-sliders w-5"></i> Pengaturan</a>
+    <aside class="w-64 bg-[#0F1B2D] border-r border-slate-800 flex flex-col hidden md:flex z-30">
+        <div class="p-4 font-bold text-lg border-b border-slate-800">TRADING SIMULATOR</div>
+        
+        <nav class="flex-1 p-4 space-y-2" id="desktop-nav">
+            <button data-page="dashboard" class="nav-link active-link w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200">
+                Dashboard
+            </button>
+            <button data-page="materi" class="nav-link w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200">
+                Materi Indikator
+            </button>
+            <button data-page="simulator" class="nav-link w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200">
+                Simulator Utama
+            </button>
+            </nav>
+    </aside>
+
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-[#0F1B2D] border-t border-slate-800 flex justify-around py-2 z-40 text-[11px]" id="mobile-nav">
+        <button data-page="dashboard" class="nav-link flex flex-col items-center gap-1 p-2">
+            <span>Dashboard</span>
+        </button>
+        <button data-page="materi" class="nav-link flex flex-col items-center gap-1 p-2">
+            <span>Materi</span>
+        </button>
+        <button data-page="simulator" class="nav-link flex flex-col items-center gap-1 p-2">
+            <span>Simulator</span>
+        </button>
     </nav>
-    <div class="p-4 border-t border-slate-800 text-[11px] text-slate-400 leading-relaxed bg-[#0b1422]">
-      <p class="font-semibold text-yellow-500 mb-1"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Disclaimer:</p>
-      Aplikasi ini hanya untuk edukasi dan simulasi. Bukan ajakan membeli atau menjual saham.
-    </div>
-  </aside>
 
-  <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-[#0F1B2D] border-t border-slate-800 flex justify-around py-2 z-40 text-[10px]">
-    <a href="#" onclick="navigate('dashboard')" class="flex flex-col items-center gap-1 text-slate-400"><i class="fa-solid fa-gauge text-base"></i><span>Dash</span></a>
-    <a href="#" onclick="navigate('materi')" class="flex flex-col items-center gap-1 text-slate-400"><i class="fa-solid fa-book text-base"></i><span>Materi</span></a>
-    <a href="#" onclick="navigate('simulator')" class="flex flex-col items-center gap-1 text-slate-400"><i class="fa-solid fa-sliders text-base"></i><span>Sim</span></a>
-    <a href="#" onclick="navigate('entry')" class="flex flex-col items-center gap-1 text-slate-400"><i class="fa-solid fa-right-to-bracket text-base"></i><span>Entry</span></a>
-    <a href="#" onclick="navigate('kuis')" class="flex flex-col items-center gap-1 text-slate-400"><i class="fa-solid fa-circle-question text-base"></i><span>Kuis</span></a>
-  </nav>
+    <main class="flex-1 flex flex-col h-screen overflow-hidden">
+        <header class="bg-[#0F1B2D] border-b border-slate-800 p-4 flex items-center justify-between z-20 shadow-md">
+            <h1 id="current-title" class="text-xl font-semibold">Dashboard</h1>
+            <div class="text-sm">Trader Pemula <span class="bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded text-xs ml-1">PEMULA</span></div>
+        </header>
 
-  <main class="flex-1 flex flex-col h-screen overflow-hidden bg-[#08111F]">
-    <header class="bg-[#0F1B2D] border-b border-slate-800 p-4 flex items-center justify-between z-20 shadow-md">
-      <div class="flex items-center gap-3">
-        <button onclick="toggleMobileMenu()" class="md:hidden text-slate-300 text-xl focus:outline-none"><i class="fa-solid fa-bars"></i></button>
-        <h2 id="view-title" class="text-lg font-bold text-white tracking-wide">Dashboard</h2>
-      </div>
-      <div class="flex items-center gap-3">
-        <div class="hidden sm:flex flex-col text-right">
-          <span id="user-display-name" class="text-sm font-semibold text-slate-200">Trader Pemula</span>
-          <span id="user-badge-level" class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">Pemula</span>
-        </div>
-        <div class="w-10 h-10 rounded-full bg-slate-800 border-2 border-slate-700 flex items-center justify-center text-slate-300 font-bold"><i class="fa-solid fa-user"></i></div>
-      </div>
-    </header>
-
-    <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 pb-24 md:pb-6 custom-scrollbar">
-      
-      <section id="page-dashboard" class="page-view space-y-6 animate-fade-in">
-        <div class="p-6 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl border border-blue-500/20 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
-            <h3 class="text-xl font-bold text-white mb-1">Selamat Datang Kembali, <span class="text-blue-400 font-extrabold" id="dash-greeting-name">Trader</span>! 👋</h3>
-            <p class="text-sm text-slate-300">Siap mempertajam analisis teknikal hari ini? Pilih indikator di bawah atau langsung gunakan simulator kontrol risiko.</p>
-          </div>
-          <div class="flex gap-2 w-full md:w-auto">
-            <button onclick="navigate('simulator')" class="flex-1 md:flex-none px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-semibold text-xs transition shadow-lg shadow-emerald-900/30">Mulai Simulator</button>
-            <button onclick="navigate('materi')" class="flex-1 md:flex-none px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl font-semibold text-xs transition border border-slate-700">Pelajari Materi</button>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="card-glass p-4 rounded-xl border border-slate-800 flex items-center gap-4">
-            <div class="p-3 rounded-xl bg-blue-500/10 text-blue-400 text-xl"><i class="fa-solid fa-book-open"></i></div>
-            <div>
-              <p class="text-xs text-slate-400 font-medium">Materi Selesai</p>
-              <h4 class="text-lg font-bold text-white mt-0.5" id="dash-stat-materi">0 / 9</h4>
-            </div>
-          </div>
-          <div class="card-glass p-4 rounded-xl border border-slate-800 flex items-center gap-4">
-            <div class="p-3 rounded-xl bg-purple-500/10 text-purple-400 text-xl"><i class="fa-solid fa-microchip"></i></div>
-            <div>
-              <p class="text-xs text-slate-400 font-medium">Total Simulasi</p>
-              <h4 class="text-lg font-bold text-white mt-0.5" id="dash-stat-sim">0 Kali</h4>
-            </div>
-          </div>
-          <div class="card-glass p-4 rounded-xl border border-slate-800 flex items-center gap-4">
-            <div class="p-3 rounded-xl bg-yellow-500/10 text-yellow-400 text-xl"><i class="fa-solid fa-square-poll-vertical"></i></div>
-            <div>
-              <p class="text-xs text-slate-400 font-medium">Skor Kuis Terakhir</p>
-              <h4 class="text-lg font-bold text-white mt-0.5" id="dash-stat-kuis">-</h4>
-            </div>
-          </div>
-          <div class="card-glass p-4 rounded-xl border border-slate-800 flex items-center gap-4">
-            <div class="p-3 rounded-xl bg-emerald-500/10 text-emerald-400 text-xl"><i class="fa-solid fa-shield-halved"></i></div>
-            <div>
-              <p class="text-xs text-slate-400 font-medium">Level Pemahaman</p>
-              <h4 class="text-sm font-extrabold text-emerald-400 mt-1 uppercase tracking-wide" id="dash-stat-level">Pemula</h4>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div class="lg:col-span-2 card-glass p-5 rounded-2xl border border-slate-800 space-y-4">
-            <h4 class="text-sm font-bold tracking-wide text-slate-200 uppercase flex items-center gap-2"><i class="fa-solid fa-spinner text-blue-400 animate-spin-slow"></i> Progress Pemahaman Indikator</h4>
-            <div class="space-y-3" id="dash-progress-container">
-              </div>
-          </div>
-          <div class="card-glass p-5 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-4">
-            <div>
-              <h4 class="text-sm font-bold tracking-wide text-slate-200 uppercase mb-4 flex items-center gap-2"><i class="fa-solid fa-chart-pie text-purple-400"></i> Gambaran Umum Risk Meter</h4>
-              <div class="flex flex-col items-center justify-center py-4 relative">
-                <div class="w-32 h-32 rounded-full border-8 border-slate-800 flex flex-col items-center justify-center relative overflow-hidden shadow-inner">
-                  <div id="dash-risk-gauge" class="absolute inset-0 border-8 border-transparent border-t-emerald-500 transition-transform duration-1000 rotate-0 rounded-full"></div>
-                  <span class="text-2xl font-black text-white z-10" id="dash-risk-score">0</span>
-                  <span class="text-[9px] text-slate-400 font-bold uppercase tracking-wider z-10 mt-0.5">Risk Score</span>
-                </div>
-                <span id="dash-risk-status-badge" class="mt-4 px-3 py-1 rounded-full text-xs font-bold bg-slate-800 text-slate-400 border border-slate-700 uppercase tracking-widest">Belum Ada Analisis</span>
-              </div>
-            </div>
-            <p class="text-center text-[10px] text-slate-400 italic">Gunakan "Simulator Utama" untuk memperbarui score risiko market terintegrasi.</p>
-          </div>
-        </div>
-      </section>
-
-      <section id="page-materi" class="page-view space-y-6 hidden animate-fade-in">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="materi-grid-container">
-          </div>
-      </section>
-
-      <section id="page-simulator" class="page-view space-y-6 hidden animate-fade-in">
-        <div class="p-4 rounded-xl bg-slate-900/50 border border-slate-800 flex justify-between items-center flex-wrap gap-2">
-          <p class="text-xs text-slate-300 font-medium"><i class="fa-solid fa-circle-info text-blue-400 mr-1"></i> Kombinasikan berbagai parameter teknikal di bawah untuk mengecek status risiko pasar.</p>
-          <button onclick="loadSimulatorSampleData()" class="px-3 py-1.5 bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 rounded-lg text-xs font-semibold border border-blue-500/20 transition"><i class="fa-solid fa-vial mr-1"></i> Pakai Data Contoh</button>
-        </div>
-
-        <form id="main-simulator-form" onsubmit="analyzeMainSimulator(event)" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div class="lg:col-span-2 card-glass p-6 rounded-2xl border border-slate-800 space-y-6">
-            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-200 border-b border-slate-800 pb-3 flex items-center gap-2"><i class="fa-solid fa-sliders text-emerald-400"></i> Konfigurasi Data Pasar & Indikator</h3>
+        <div class="flex-1 overflow-y-auto p-4 md:p-6 pb-24 md:pb-6 custom-scrollbar transform-gpu">
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Harga Saham Sekarang</label>
-                <input type="number" id="sim-price" required class="input-field" placeholder="Contoh: 3420">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Garis Moving Average 200 (MA200)</label>
-                <input type="number" id="sim-ma200" required class="input-field" placeholder="Contoh: 3086">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Garis Moving Average 50 (MA50)</label>
-                <input type="number" id="sim-ma50" required class="input-field" placeholder="Contoh: 3150">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Garis Moving Average 100 (MA100)</label>
-                <input type="number" id="sim-ma100" required class="input-field" placeholder="Contoh: 3100">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Volume Transaksi Saat Ini</label>
-                <input type="number" id="sim-volume" required class="input-field" placeholder="Contoh: 150000">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Rata-Rata Volume (MA20 Volume)</label>
-                <input type="number" id="sim-vol-avg" required class="input-field" placeholder="Contoh: 100000">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">MACD Line Position</label>
-                <input type="number" id="sim-macd" step="0.01" required class="input-field" placeholder="Contoh: 15.5">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Signal Line Position</label>
-                <input type="number" id="sim-signal" step="0.01" required class="input-field" placeholder="Contoh: 10.2">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Relative Strength Index (RSI)</label>
-                <input type="number" id="sim-rsi" min="0" max="100" required class="input-field" placeholder="Range: 0 - 100">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Stochastic Oscillator (%K)</label>
-                <input type="number" id="sim-stoch" min="0" max="100" required class="input-field" placeholder="Range: 0 - 100">
-              </div>
-            </div>
-
-            <div class="border-t border-slate-800 pt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Kondisi Struktur Order Book</label>
-                <select id="sim-orderbook" class="input-field">
-                  <option value="tebal-bid">Bid Tebal, Offer Tipis (Minat Beli Tinggi)</option>
-                  <option value="normal">Bid & Offer Berimbang (Normal)</option>
-                  <option value="tebal-offer">Offer Sangat Tebal (Tekanan Jual Tinggi)</option>
-                  <option value="spread-lebar">Spread Lebar / Tidak Likuid (Risiko Tinggi)</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Kondisi Aksi Candlestick Terakhir</label>
-                <select id="sim-candle" class="input-field">
-                  <option value="mantul">Harga Rebound/Mantul dari Area Support Terdekat</option>
-                  <option value="normal">Konsolidasi Normal Tengah Range</option>
-                  <option value="jebol">Breakdown / Harga Tembus Support ke Bawah</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="flex gap-3 pt-2">
-              <button type="submit" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-sm transition shadow-lg shadow-emerald-900/20"><i class="fa-solid fa-bolt mr-1"></i> Jalankan Analisis Risiko</button>
-              <button type="button" onclick="resetMainSimulator()" class="px-5 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl font-semibold text-sm border border-slate-700 transition">Reset</button>
-            </div>
-          </div>
-
-          <div class="card-glass p-6 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-6" id="simulator-result-card">
-            <div class="space-y-6">
-              <h3 class="text-sm font-bold uppercase tracking-wider text-slate-200 border-b border-slate-800 pb-3 flex items-center gap-2"><i class="fa-solid fa-square-poll-vertical text-purple-400"></i> Hasil Kalkulator Evaluasi</h3>
-              
-              <div class="text-center space-y-3 py-4 bg-slate-900/30 rounded-xl border border-slate-800/60">
-                <p class="text-xs font-bold uppercase tracking-widest text-slate-400">Status Risiko Market</p>
-                <div id="sim-res-badge" class="inline-block px-4 py-1.5 rounded-full font-black tracking-widest text-sm bg-slate-800 text-slate-500">BELUM ADA DATA</div>
-                
-                <div class="flex justify-center items-center pt-2">
-                  <div class="w-28 h-28 rounded-full border-4 border-slate-800 flex flex-col items-center justify-center relative">
-                    <span class="text-3xl font-black text-white" id="sim-res-score">0</span>
-                    <span class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">Risk Score</span>
-                  </div>
+            <section id="page-dashboard" class="page-view space-y-6 transform-gpu transition-all duration-300">
+                <div class="bg-[#0F1B2D] p-6 rounded-2xl border border-slate-800">
+                    <h2 class="text-lg font-medium mb-2">Selamat Datang di Trading Simulator</h2>
+                    <p class="text-slate-400 text-sm">Pilih materi atau simulasi di sidebar untuk memulai belajar.</p>
                 </div>
-              </div>
+            </section>
 
-              <div class="space-y-3 text-xs">
-                <p class="font-bold text-slate-300 uppercase tracking-wide flex items-center gap-1.5"><i class="fa-solid fa-paste text-blue-400"></i> Rekomendasi Edukasi:</p>
-                <p id="sim-res-desc" class="text-slate-400 leading-relaxed italic">Silakan lengkapi form data pasar di sebelah kiri lalu jalankan analisis risiko untuk mendapatkan feedback simulasi belajar.</p>
-              </div>
-            </div>
-
-            <div id="sim-res-metrics-box" class="hidden space-y-2 text-xs border-t border-slate-800 pt-4">
-              <div class="flex justify-between text-slate-400"><span>Ratio Volume:</span><span id="sim-res-vol-ratio" class="font-mono font-bold text-white">1.0x</span></div>
-              <div class="flex justify-between text-slate-400"><span>Jarak ke MA200:</span><span id="sim-res-ma-dist" class="font-mono font-bold text-white">0%</span></div>
-            </div>
-          </div>
-        </form>
-      </section>
-
-      <section id="page-ma200" class="page-view space-y-6 hidden animate-fade-in">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div class="card-glass p-6 rounded-2xl border border-slate-800 space-y-4">
-            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-200 border-b border-slate-800 pb-3 flex items-center gap-2"><i class="fa-solid fa-gears text-blue-400"></i> Simulator Jarak MA200</h3>
-            <div class="space-y-4">
-              <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Harga Saham Sekarang</label>
-                <input type="number" id="ma200-price" class="input-field" placeholder="Misal: 3420">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Nilai Garis MA200</label>
-                <input type="number" id="ma200-value" class="input-field" placeholder="Misal: 3086">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Volume Ratio Transaksi</label>
-                <input type="number" step="0.1" id="ma200-vol-ratio" class="input-field" placeholder="Misal: 1.5">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Arah Tren Garis MA200</label>
-                <select id="ma200-trend" class="input-field">
-                  <option value="naik">Miring Naik (Bullish Structure)</option>
-                  <option value="datar">Datar / Sideways (Konsolidasi)</option>
-                  <option value="turun">Miring Turun (Bearish Structure)</option>
-                </select>
-              </div>
-              <button onclick="calculateMA200Simulator()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-sm transition">Hitung Jarak & Kondisi</button>
-            </div>
-          </div>
-
-          <div class="lg:col-span-2 card-glass p-6 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-4">
-            <div>
-              <h3 class="text-sm font-bold uppercase tracking-wider text-slate-200 border-b border-slate-800 pb-3"><i class="fa-solid fa-square-poll-horizontal text-emerald-400 mr-2"></i>Hasil Analisis Struktur Tren</h3>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
-                <div class="bg-slate-900/40 p-4 rounded-xl border border-slate-800/80 space-y-2">
-                  <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Persentase Jarak Jauh (Distance)</p>
-                  <p class="text-2xl font-black text-white font-mono" id="ma200-res-distance">0,00%</p>
-                  <p class="text-[11px] text-slate-400" id="ma200-res-pos-text">Data belum dianalisis.</p>
+            <section id="page-materi" class="page-view space-y-6 hidden transform-gpu transition-all duration-300">
+                <div class="bg-[#0F1B2D] p-6 rounded-2xl border border-slate-800">
+                    <h2 class="text-lg font-medium">Materi Indikator Saham</h2>
                 </div>
-                <div class="bg-slate-900/40 p-4 rounded-xl border border-slate-800/80 space-y-2 flex flex-col justify-center items-start">
-                  <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-1">Status Keamanan Tren</p>
-                  <div id="ma200-res-badge" class="px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-widest bg-slate-800 text-slate-400 border border-slate-700">BELUM ADA DATA</div>
-                </div>
-              </div>
-              <div class="mt-4 p-4 rounded-xl bg-slate-900/20 border border-slate-800 text-xs leading-relaxed text-slate-300 space-y-2">
-                <p class="font-bold text-slate-200 flex items-center gap-1.5"><i class="fa-solid fa-comment-dots text-purple-400"></i> Catatan Edukasi Tren:</p>
-                <p id="ma200-res-explanation" class="italic text-slate-400">Silakan isi form input di sebelah kiri atau pilih salah satu tombol preset contoh riil kasus di bawah ini untuk memulai pembelajaran tren MA200.</p>
-              </div>
-            </div>
+            </section>
 
-            <div class="border-t border-slate-800 pt-3">
-              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Pilih Sampel Skenario Edukatif Langsung:</p>
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                <button onclick="loadMA200Preset(3420, 3086, 1.0, 'naik')" class="preset-btn">Kasus 1 (+10.8%)</button>
-                <button onclick="loadMA200Preset(3100, 3086, 0.8, 'turun')" class="preset-btn">Kasus 2 (+0.45%)</button>
-                <button onclick="loadMA200Preset(3000, 3086, 1.5, 'turun')" class="preset-btn">Kasus 3 (-2.78%)</button>
-                <button onclick="loadMA200Preset(3200, 3086, 1.6, 'naik')" class="preset-btn">Kasus 4 (+3.69%)</button>
-              </div>
-            </div>
-          </div>
+            <section id="page-simulator" class="page-view space-y-6 hidden transform-gpu transition-all duration-300">
+                <div class="bg-[#0F1B2D] p-6 rounded-2xl border border-slate-800">
+                    <h2 class="text-lg font-medium">Simulator Trading Utama</h2>
+                </div>
+            </section>
+
         </div>
-      </section>
+    </main>
 
-      <section id="page-entry" class="page-view space-y-6 hidden animate-fade-in">
-        <form id="entry-simulator-form" onsubmit="calculateEntrySimulator(event)" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div class="card-glass p-6 rounded-2xl border border-slate-800 space-y-4">
-            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-200 border-b border-slate-800 pb-3"><i class="fa-solid fa-right-to-bracket text-emerald-400 mr-2"></i>Parameter Rencana Entry</h3>
-            <div class="space-y-3 text-xs">
-              <div>
-                <label class="block font-medium text-slate-400 mb-1">Harga Beli Rencana (Entry Price)</label>
-                <input type="number" id="entry-price" required class="input-field" placeholder="Contoh: 3200">
-              </div>
-              <div>
-                <label class="block font-medium text-slate-400 mb-1">Target Harga Jual (Take Profit)</label>
-                <input type="number" id="entry-target" required class="input-field" placeholder="Contoh: 3600">
-              </div>
-              <div>
-                <label class="block font-medium text-slate-400 mb-1">Batas Proteksi Rugi (Stop Loss)</label>
-                <input type="number" id="entry-sl" required class="input-field" placeholder="Contoh: 3000">
-              </div>
-              <div class="border-t border-slate-800 pt-3 space-y-3">
-                <p class="font-bold uppercase tracking-widest text-slate-400 text-[10px]">Kondisi Pendukung Tambahan</p>
-                <label class="flex items-center gap-2 cursor-pointer text-slate-300">
-                  <input type="checkbox" id="entry-chk-support" class="rounded border-slate-700 bg-slate-800 text-blue-600 focus:ring-0">
-                  <span>Lokasi beli dekat dengan area Support</span>
-                </label>
-                <label class="flex items-center gap-2 cursor-pointer text-slate-300">
-                  <input type="checkbox" id="entry-chk-ma200" class="rounded border-slate-700 bg-slate-800 text-blue-600 focus:ring-0">
-                  <span>Harga bertahan stabil di atas MA200</span>
-                </label>
-                <label class="flex items-center gap-2 cursor-pointer text-slate-300">
-                  <input type="checkbox" id="entry-chk-rsi" class="rounded border-slate-700 bg-slate-800 text-blue-600 focus:ring-0">
-                  <span>RSI tidak panas / normal (Di bawah 70)</span>
-                </label>
-              </div>
-              <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs uppercase tracking-wider transition pt-3">Uji Kelayakan Rencana Entry</button>
-            </div>
-          </div>
+    <style>
+        .nav-link { color: #94a3b8; }
+        .nav-link:hover { color: #f1f5f9; background-color: rgba(255,255,255,0.02); }
+        .active-link { color: #38bdf8 !important; background-color: rgba(56, 189, 248, 0.1) !important; font-weight: 500; }
+    </style>
 
-          <div class="lg:col-span-2 card-glass p-6 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-6">
-            <div>
-              <h3 class="text-sm font-bold uppercase tracking-wider text-slate-200 border-b border-slate-800 pb-3"><i class="fa-solid fa-calculator text-purple-400 mr-2"></i>Rasio Keuangan & Validasi Risiko</h3>
-              
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
-                <div class="bg-slate-900/40 p-4 rounded-xl border border-slate-800/80">
-                  <p class="text-[9px] font-bold uppercase text-slate-400 tracking-wider">Risk Per Share</p>
-                  <p id="entry-res-risk" class="text-xl font-bold font-mono text-white mt-1">Rp0</p>
-                </div>
-                <div class="bg-slate-900/40 p-4 rounded-xl border border-slate-800/80">
-                  <p class="text-[9px] font-bold uppercase text-slate-400 tracking-wider">Reward Per Share</p>
-                  <p id="entry-res-reward" class="text-xl font-bold font-mono text-white mt-1">Rp0</p>
-                </div>
-                <div class="bg-slate-900/40 p-4 rounded-xl border border-slate-800/80">
-                  <p class="text-[9px] font-bold uppercase text-slate-400 tracking-wider">Risk Reward Ratio (R:R)</p>
-                  <p id="entry-res-rr" class="text-xl font-bold font-mono text-white mt-1">1 : 0.0</p>
-                </div>
-              </div>
-
-              <div class="mt-6 space-y-3">
-                <div class="flex items-center gap-3">
-                  <span class="text-xs font-bold uppercase text-slate-300">Status Kelayakan:</span>
-                  <div id="entry-res-badge" class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-slate-800 text-slate-400 border border-slate-700">BELUM DIUJI</div>
-                </div>
-                <div class="p-4 rounded-xl bg-slate-900/30 border border-slate-800 text-xs leading-relaxed text-slate-300 space-y-1">
-                  <p class="font-bold text-slate-200 flex items-center gap-1.5 mb-1"><i class="fa-solid fa-list-check text-blue-400"></i> Hasil Analisis Rencana:</p>
-                  <p id="entry-res-explanation" class="italic text-slate-400">Harap tentukan harga beli, profit target, dan stop loss Anda terlebih dahulu pada modul simulasi entry.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="text-[11px] text-slate-400 bg-slate-900/20 p-3 rounded-lg border border-slate-800/50">
-              <i class="fa-solid fa-lightbulb text-yellow-500 mr-1"></i> <strong>Tips Edukasi:</strong> Risk Reward Ratio yang ideal minimal bernilai <strong>1 : 2</strong>. Artinya potensi keuntungan dua kali lipat lebih besar dibanding batasan risiko kerugian yang Anda proteksi.
-            </div>
-          </div>
-        </form>
-      </section>
-
-      <section id="page-cheatsheet" class="page-view space-y-6 hidden animate-fade-in">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="cheatsheet-grid-container">
-          </div>
-      </section>
-
-      <section id="page-studi-kasus" class="page-view space-y-6 hidden animate-fade-in">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="studi-kasus-grid-container">
-          </div>
-      </section>
-
-      <section id="page-kuis" class="page-view space-y-6 hidden animate-fade-in">
-        <div class="max-w-2xl mx-auto card-glass p-6 rounded-2xl border border-slate-800 space-y-6" id="quiz-card-box">
-          </div>
-      </section>
-
-      <section id="page-hasil" class="page-view space-y-6 hidden animate-fade-in">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="card-glass p-6 rounded-2xl border border-slate-800 text-center space-y-2 flex flex-col items-center justify-center">
-            <div class="p-4 bg-purple-500/10 text-purple-400 text-3xl rounded-full"><i class="fa-solid fa-award"></i></div>
-            <h4 class="text-sm font-bold text-slate-400 uppercase tracking-widest pt-2">Rata-rata Skor Kuis</h4>
-            <p id="hasil-avg-score" class="text-4xl font-black text-white font-mono">0</p>
-            <p class="text-xs text-slate-400">Dari seluruh percobaan kuis yang diselesaikan.</p>
-          </div>
-          
-          <div class="md:col-span-2 card-glass p-6 rounded-2xl border border-slate-800 space-y-4">
-            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-200 border-b border-slate-800 pb-2 flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-blue-400"></i> Log Aktivitas Pengguna & Rekomendasi</h3>
-            <div class="space-y-3 text-xs">
-              <div class="flex justify-between items-center bg-slate-900/30 p-3 rounded-xl border border-slate-800/60">
-                <span class="text-slate-400">Total Sesi Kuis Selesai:</span>
-                <span id="hasil-total-kuis" class="font-bold text-white">0 Kali</span>
-              </div>
-              <div class="flex justify-between items-center bg-slate-900/30 p-3 rounded-xl border border-slate-800/60">
-                <span class="text-slate-400">Total Simulasi Mandiri:</span>
-                <span id="hasil-total-sim" class="font-bold text-white">0 Sesi</span>
-              </div>
-              <div class="p-4 rounded-xl bg-blue-500/5 border border-blue-500/10 space-y-1">
-                <p class="font-bold text-blue-400 flex items-center gap-1.5"><i class="fa-solid fa-route"></i> Rekomendasi Jalur Belajar Berikutnya:</p>
-                <p id="hasil-rekomendasi" class="text-slate-300 leading-relaxed">Sistem menyarankan Anda menyelesaikan seluruh membaca bab materi indikator dan mencoba minimal satu kali simulasi komparatif pada kalkulator utama pasar.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="page-pengaturan" class="page-view space-y-6 hidden animate-fade-in">
-        <div class="max-w-xl card-glass p-6 rounded-2xl border border-slate-800 space-y-6">
-          <h3 class="text-sm font-bold uppercase tracking-wider text-slate-200 border-b border-slate-800 pb-3 flex items-center gap-2"><i class="fa-solid fa-user-gear text-blue-400"></i> Profil & Konfigurasi Sistem</h3>
-          
-          <div class="space-y-4 text-xs">
-            <div>
-              <label class="block font-semibold text-slate-400 mb-1.5 uppercase">Nama Profil Pengguna</label>
-              <input type="text" id="cfg-username" class="input-field" placeholder="Masukkan nama Anda">
-            </div>
-            <button onclick="saveUserProfileName()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition shadow-md shadow-blue-950/50">Simpan Nama Baru</button>
-            
-            <div class="border-t border-slate-800 pt-6 space-y-3">
-              <h4 class="font-bold text-slate-300 uppercase tracking-widest text-[10px] text-red-400 flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation"></i> Zona Bahaya / Reset Data</h4>
-              <p class="text-slate-400 leading-relaxed">Menghapus seluruh rekaman log progress belajar, riwayat kuis, konfigurasi simulator, dan pengaturan nama pengguna dari penyimpanan lokal browser Anda secara permanen.</p>
-              <button onclick="clearSystemData()" class="px-4 py-2 bg-red-600/10 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/20 rounded-xl font-bold transition">Reset Semua Progress Belajar</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-    </div>
-
-    <footer class="bg-[#0F1B2D] border-t border-slate-800 p-4 text-center text-xs text-slate-400 space-y-1 z-10">
-      <p class="font-medium">Trading Indicator Learning Simulator — Edukasi, bukan rekomendasi investasi.</p>
-      <p class="text-[11px] text-slate-500">Dibuat oleh <span class="text-blue-400 font-semibold">vickydisini</span></p>
-    </footer>
-  </main>
-
-  <div id="toast-notif" class="fixed bottom-20 md:bottom-24 right-4 md:right-6 transform translate-y-24 opacity-0 transition-all duration-300 z-50 rounded-xl shadow-2xl max-w-sm w-full bg-slate-900 border border-slate-800 flex items-center p-4">
-    <div id="toast-icon-box" class="mr-3 text-lg"></div>
-    <div id="toast-text" class="text-xs font-semibold text-slate-200"></div>
-  </div>
-
+    <script src="app.js" type="module"></script>
 </body>
 </html>
