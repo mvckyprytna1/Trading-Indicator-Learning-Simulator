@@ -67,6 +67,19 @@ function navigate(viewId) {
   // Hide all screens
   document.querySelectorAll('.page-view').forEach(view => view.classList.add('hidden'));
   document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+// 1. Pastikan fungsi navigate kamu strukturnya seperti ini
+function navigate(pageId) {
+    // Sembunyikan semua section dengan class 'page-view'
+    document.querySelectorAll('.page-view').forEach(section => {
+        section.classList.add('hidden');
+    });
+
+    // Tampilkan section yang sedang dipilih
+    const targetSection = document.getElementById(`page-${pageId}`);
+    if (targetSection) {
+        targetSection.classList.remove('hidden');
+    }
+}
   
   // Activate selected component
   const activeView = document.getElementById(`page-${viewId}`);
@@ -623,3 +636,6 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('cfg-username').value = appState.username === 'Trader Pemula' ? '' : appState.username;
   navigate('dashboard');
 });
+
+// 2. BIANG FIX-NYA: Tambahkan baris ini di paling bawah file JS kamu!
+window.navigate = navigate;              
