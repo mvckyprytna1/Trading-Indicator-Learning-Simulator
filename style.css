@@ -1,0 +1,104 @@
+/* Base Scrollbar Styling */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #08111F;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #1E293B;
+  border-radius: 999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Glassmorphism Theme Architecture Card layout */
+.card-glass {
+  background: rgba(15, 27, 45, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Custom Tailwind Helper Input fields configuration */
+.input-field {
+  width: 100%;
+  background-color: rgba(8, 17, 31, 0.8);
+  border: 1px solid #1E293B;
+  border-radius: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  color: #F8FAFC;
+  font-size: 0.875rem;
+  transition: all 0.2s ease-in-out;
+}
+.input-field:focus {
+  outline: none;
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+}
+
+/* Presets button micro-interaction style */
+.preset-btn {
+  background-color: rgba(30, 41, 59, 0.5);
+  border: 1px solid #334155;
+  color: #94A3B8;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 0.4rem 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+.preset-btn:hover {
+  background-color: rgba(59, 130, 246, 0.15);
+  border-color: #3B82F6;
+  color: #F8FAFC;
+}
+
+/* Sidebar Active Route Link highlight structure */
+.nav-link.active {
+  background-color: rgba(59, 130, 246, 0.15);
+  color: #3B82F6;
+  border-left: 3px solid #3B82F6;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.nav-link:not(.active) {
+  color: #94A3B8;
+  border-left: 3px solid transparent;
+}
+.nav-link:hover:not(.active) {
+  background-color: rgba(255, 255, 255, 0.03);
+  color: #F8FAFC;
+}
+
+/* Animation utilities mapping smooth reveals */
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-spin-slow {
+  animation: spin 8s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Custom Alert Slide transitions */
+.toast-slide-up {
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+}
+
+/* Form Dropdown items reset style override */
+select option {
+  background: #0F1B2D;
+  color: #F8FAFC;
+}
